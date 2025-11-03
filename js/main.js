@@ -9,7 +9,8 @@ class CCFDirectory {
         this.currentFilters = {
             search: '',
             type: 'all',
-            level: 'all'
+            level: 'all',
+            category: 'all'
         };
         
         this.init();
@@ -90,6 +91,16 @@ class CCFDirectory {
             });
         });
 
+        // 分类筛选
+        const categoryFilters = document.querySelectorAll('[data-category]');
+        categoryFilters.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.setActiveFilter(categoryFilters, e.target);
+                this.currentFilters.category = e.target.dataset.category;
+                this.applyFilters();
+            });
+        });
+
         // 重置筛选
         document.getElementById('resetFilters').addEventListener('click', () => {
             this.resetFilters();
@@ -121,7 +132,7 @@ class CCFDirectory {
     applyFilters() {
         if (!this.data) return;
 
-        const { search, type, level } = this.currentFilters;
+        const { search, type, level, category } = this.currentFilters;
         const searchLower = search.toLowerCase();
 
         // 筛选期刊
@@ -133,8 +144,9 @@ class CCFDirectory {
             
             const matchesType = type === 'all' || item.type === type;
             const matchesLevel = level === 'all' || item.level === level;
+            const matchesCategory = category === 'all' || item.category === category;
             
-            return matchesSearch && matchesType && matchesLevel;
+            return matchesSearch && matchesType && matchesLevel && matchesCategory;
         });
 
         // 筛选会议
@@ -146,8 +158,9 @@ class CCFDirectory {
             
             const matchesType = type === 'all' || item.type === type;
             const matchesLevel = level === 'all' || item.level === level;
+            const matchesCategory = category === 'all' || item.category === category;
             
-            return matchesSearch && matchesType && matchesLevel;
+            return matchesSearch && matchesType && matchesLevel && matchesCategory;
         });
 
         this.render();
@@ -170,6 +183,12 @@ class CCFDirectory {
         levelFilters.forEach(btn => btn.classList.remove('active'));
         levelFilters[0].classList.add('active'); // "全部"按钮
         this.currentFilters.level = 'all';
+
+        // 重置分类筛选
+        const categoryFilters = document.querySelectorAll('[data-category]');
+        categoryFilters.forEach(btn => btn.classList.remove('active'));
+        categoryFilters[0].classList.add('active'); // "全部"按钮
+        this.currentFilters.category = 'all';
 
         this.applyFilters();
     }
