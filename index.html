@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCF期刊会议集合 - 中国计算机学会推荐国际学术期刊和会议目录</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1 class="site-title">CCF期刊会议集合</h1>
+                    <p class="site-subtitle">中国计算机学会推荐国际学术期刊和会议目录</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalCount">280</span>
+                        <span class="stat-label">总数</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="journalCount">96</span>
+                        <span class="stat-label">期刊</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="conferenceCount">184</span>
+                        <span class="stat-label">会议</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <div class="container">
+            <!-- 搜索和筛选区域 -->
+            <section class="search-section">
+                <div class="search-controls">
+                    <!-- 搜索框 -->
+                    <div class="search-box">
+                        <div class="search-input-wrapper">
+                            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" id="searchInput" placeholder="搜索期刊/会议缩写..." class="search-input">
+                            <button id="clearSearch" class="clear-btn" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 类型筛选 -->
+                    <div class="filter-group">
+                        <label class="filter-label">类型：</label>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-type="all">全部</button>
+                            <button class="filter-btn" data-type="journal">期刊</button>
+                            <button class="filter-btn" data-type="conference">会议</button>
+                        </div>
+                    </div>
+
+                    <!-- 级别筛选 -->
+                    <div class="filter-group">
+                        <label class="filter-label">级别：</label>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-level="all">全部</button>
+                            <button class="filter-btn" data-level="A">A类</button>
+                            <button class="filter-btn" data-level="B">B类</button>
+                            <button class="filter-btn" data-level="C">C类</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 结果统计 -->
+                <div class="results-info">
+                    <span id="resultsCount">显示 280 个结果</span>
+                    <button id="resetFilters" class="reset-btn">重置筛选</button>
+                </div>
+            </section>
+
+            <!-- 期刊会议列表 -->
+            <section class="content-section">
+                <div id="loadingSpinner" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>加载中...</p>
+                </div>
+
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <svg class="empty-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <h3>未找到匹配的结果</h3>
+                    <p>请尝试调整搜索条件或筛选条件</p>
+                </div>
+
+                <div id="itemsContainer" class="items-container">
+                    <!-- 期刊列表 -->
+                    <div class="category-section" id="journalsSection" style="display: none;">
+                        <h2 class="category-title">
+                            <span class="category-icon">📄</span>
+                            期刊 (Journals)
+                            <span class="category-count" id="journalCountDisplay">0</span>
+                        </h2>
+                        <div class="items-grid" id="journalsGrid"></div>
+                    </div>
+
+                    <!-- 会议列表 -->
+                    <div class="category-section" id="conferencesSection" style="display: none;">
+                        <h2 class="category-title">
+                            <span class="category-icon">🎯</span>
+                            会议 (Conferences)
+                            <span class="category-count" id="conferenceCountDisplay">0</span>
+                        </h2>
+                        <div class="items-grid" id="conferencesGrid"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2024 CCF期刊会议集合. 数据来源：中国计算机学会官方目录</p>
+                    <p>最后更新：2024-11-03 | 版本：2024.1</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">关于CCF</a>
+                    <a href="#" class="footer-link">联系我们</a>
+                    <a href="#" class="footer-link">意见反馈</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
